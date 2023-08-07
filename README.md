@@ -24,4 +24,3 @@ The command for starting the application  is as given below:
 ```
 npm start
 ```
-someting
