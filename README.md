@@ -21,7 +21,7 @@ npm run build
 ```
 
 You must provide the required node_modules before running. You can use the following command:
-‍‍‍‍‍```
+```
 npm i
 ```
 
