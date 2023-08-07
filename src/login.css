@@ -1,0 +1,84 @@
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .movie-image {
+    width: 50%;
+  }
+  
+  .movie-image img {
+    width: 100%;
+  }
+  
+  .signup-form {
+    width: 30%;
+    padding: 50px;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+  }
+  
+  .signup-form h2 {
+    text-align: center;
+  }
+  
+  .signup-form input {
+    width: 95.5%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .remember-me {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .remember-me input {
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+  }
+  
+  .remember-me label {
+    font-size: 14px;
+    position: absolute;
+    padding-left: 24px;
+    padding-top:4px;
+    cursor: pointer;
+  }
+  
+  .remember-me label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+  }
+  
+  .remember-me input[type="checkbox"]:checked + label::before {
+    background-color: #4caf50;
+  }
+  
+  .remember-me label::after {
+    content: "\2713"; /* Unicode character for checkmark */
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    font-size: 12px;
+    color: #fff;
+    opacity: 0;
+  }
+  
+  .remember-me input[type="checkbox"]:checked + label::after {
+    opacity: 1;
+  }
+  
+  

@@ -1,0 +1,58 @@
+/* userDropdown.css */
+
+.user-dropdown {
+    position: relative;
+  }
+  
+  .user-icon {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    color: #333;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .user-icon:hover {
+    background-color: rgb(71, 172, 138);
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    list-style: none;
+    min-width: 120px;
+    z-index: 1;
+  }
+  
+  .dropdown-menu li {
+    margin-bottom: 10px;
+  }
+  
+  .dropdown-menu li a {
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: left;
+  }
+  
+  .dropdown-menu li a:hover {
+    text-decoration: underline;
+  }
+
+ 
+  

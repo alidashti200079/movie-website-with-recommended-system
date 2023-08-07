@@ -1,0 +1,13 @@
+/* header.css */
+  
+  h1 {
+    margin: 0;
+    font-size: 50px;
+    color: rgb(31, 112, 124);
+  }
+  
+  p {
+    font-size: 20px;
+    margin-top: 10px;
+  }
+  
