@@ -29,3 +29,16 @@ The command for starting the application  is as given below:
 ```
 npm start
 ```
+
+# Run the backend
+First, we need to go to the venv environment.
+To run venv, first go to the /venv /bin directory and then run the following command:
+```
+source activate
+```
+
+Then go to the /src/api directory and run the following command:
+```
+uvicorn app:app --reload
+```
+
