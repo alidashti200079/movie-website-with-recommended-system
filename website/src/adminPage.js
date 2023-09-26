@@ -1,42 +1,134 @@
-import React, { useState } from 'react';
-import { Tabs, Tab, Dialog, DialogTitle, DialogContent, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { useState } from 'react';
+import { Dialog, DialogTitle, DialogContent, TextField, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { MovieProvider } from './contexts/movieContext';
+import MoviesTable from './contexts/movieTable'
+import SeriesTable from './contexts/serieTable';
+import { SerieProvider } from './contexts/serieContext'
+import { ActorProvider } from './contexts/actorContext';
+import ActorsTable from './contexts/actorTable'
+import { UserProvider } from './contexts/userContext';
+import UsersTable from './contexts/userTable';
+import { AdminProvider } from './contexts/adminContext';
+import AdminsTable from './contexts/adminTable';
+import api from './api/api';
+import { UpdateMovieContextProvider } from './contexts/updateMovieContext';
+import { UpdateAdminContextProvider } from './contexts/updateAdminContext';
+import { UpdateActorContextProvider } from './contexts/updateActorContext';
+import { UpdateSerieContextProvider } from './contexts/updateSerieContext';
+import { UpdateUserContextProvider } from './contexts/updateUserContext';
 
 const AdminPage = () => {
+
   const [selectedTab, setSelectedTab] = useState('Movies');
   const [openDialog, setOpenDialog] = useState(false);
-  const [formData, setFormData] = useState({});
-  const [items, setItems] = useState({
-    Movies: [
-      { id: 1, name: 'Movie 1', image: 'image_url_1', description: 'Description 1', rating: 4.5 },
-      { id: 2, name: 'Movie 2', image: 'image_url_2', description: 'Description 2', rating: 6 },
-      { id: 3, name: 'Movie 3', image: 'image_url_3', description: 'Description 3', rating: 7.1 },
-      { id: 4, name: 'Movie 4', image: 'image_url_4', description: 'Description 4', rating: 8 },
-      { id: 5, name: 'Movie 5', image: 'image_url_5', description: 'Description 5', rating: 3.8 },
-      { id: 6, name: 'Movie 6', image: 'image_url_6', description: 'Description 6', rating: 5.8 },
-      // ... other movie items
-    ],
-    Series: [
-      { id: 1, name: 'Series 1', image: 'image_url_1', description: 'Description 1', rating: 4.2 },
-      // ... other series items
-    ],
-    Actors: [
-      { id: 1, name: 'Actor 1', image: 'image_url_1', description: 'Description 1', rating: 4.7 },
-      { id: 2, name: 'Actor 2', image: 'image_url_2', description: 'Description 2', rating: 6.3 },
-      { id: 3, name: 'Actor 3', image: 'image_url_3', description: 'Description 3', rating: 2.9 },
-      // ... other actor items
-    ],
-    Users: [
-      { id: 1, username: 'user1', password: 'pass1', email: 'user1@example.com' },
-      // ... other user items
-    ],
-    Admins: [
-      { id: 1, username: 'admin1', password: 'adminpass1', email: 'admin@example.com' },
-      // ... other admin items
-    ],
+  const [formData, setFormData] = useState({}); 
+  const [formMovie, setFormMovie] = useState({
+    name: '',
+    image: '',
+    description: '', 
+    genre: '',
+    rating: ''
+  });
+  const [seriesFormData, setSeriesFormData] = useState({
+    name: '',
+    image: '',
+    description: '', 
+    genre: '',
+    rating: ''
+  });
+  const [actorsFormData, setActorsFormData] = useState({
+    name: '',
+    image: '',
+    description: '', 
+  });
+  const [usersFormData, setUsersFormData] = useState({
+    username: '',
+    email: '',
+    password: ''
+  });
+  const [adminsFormData, setAdminsFormData] = useState({
+    username: '',
+    email: '',
+    password: ''
   });
 
-  const handleTabChange = (event, newValue) => {
+  const handleInputChange = (event) => {
+    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+    if (selectedTab === 'Movies') {
+      setFormMovie({
+        ...formMovie,
+        [event.target.name]: value,
+      });
+    } else if (selectedTab === 'Series') {
+      setSeriesFormData({
+        ...seriesFormData,
+        [event.target.name]: value,
+      });
+    } else if (selectedTab === 'Actors') {
+      setActorsFormData({
+        ...actorsFormData,
+        [event.target.name]: value,
+      });
+    } else if (selectedTab === 'Users') {
+      setUsersFormData({
+        ...usersFormData,
+        [event.target.name]: value,
+      });
+    } else if (selectedTab === 'Admins') {
+      setAdminsFormData({
+        ...adminsFormData,
+        [event.target.name]: value,
+      });
+    }
+  };
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    if (selectedTab === 'Movies') {
+      await api.post('/movie', formMovie);
+      setFormMovie({
+        name: '',
+        image: '',
+        description: '', 
+        genre: '',
+        rating: ''
+      })
+    } else if (selectedTab === 'Series') {
+      await api.post('/series', seriesFormData);
+      setSeriesFormData({
+        name: '',
+        image: '',
+        description: '', 
+        genre: '',
+        rating: ''
+      })
+    } else if (selectedTab === 'Actors') {
+      await api.post('/actor', actorsFormData);
+      setActorsFormData({
+        name: '',
+        image: '',
+        description: ''
+      })
+    } else if (selectedTab === 'Users') {
+      await api.post('/user', usersFormData);
+      setUsersFormData({
+        username: '',
+        email: '',
+        password: ''
+      })
+    } else if (selectedTab === 'Admins') {
+      await api.post('/admin', adminsFormData);
+      setAdminsFormData({
+        username: '',
+        email: '',
+        password: ''
+      })
+    }
+    handleCloseDialog();
+  } 
+
+  const handleTabChange = (newValue) => {
     setSelectedTab(newValue);
   };
 
@@ -49,135 +141,99 @@ const AdminPage = () => {
     setFormData({});
   };
 
-  const handleFormDataChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleAddItem = () => {
-    setItems((prevItems) => ({
-      ...prevItems,
-      [selectedTab]: [...prevItems[selectedTab], formData],
-    }));
-    handleCloseDialog();
-  };
-
-  const handleDeleteItem = (itemId) => {
-    setItems((prevItems) => ({
-      ...prevItems,
-      [selectedTab]: prevItems[selectedTab].filter((item) => item.id !== itemId),
-    }));
-  };
-
-  const renderListView = () => {
-    const tabItems = items[selectedTab];
-
-    return (
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              {selectedTab !== 'Users' && selectedTab !== 'Admins' && (
-                <>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Image</TableCell>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Rating</TableCell>
-                </>
-              )}
-              {(selectedTab === 'Users' || selectedTab === 'Admins') && (
-                <>
-                  <TableCell>Username</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Password</TableCell>
-                </>
-              )}
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tabItems.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
-                {selectedTab !== 'Users' && selectedTab !== 'Admins' && (
-                  <>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.image}</TableCell>
-                    <TableCell>{item.description}</TableCell>
-                    <TableCell>{item.rating}</TableCell>
-                  </>
-                )}
-                {(selectedTab === 'Users' || selectedTab === 'Admins') && (
-                  <>
-                    <TableCell>{item.username}</TableCell>
-                    <TableCell>{item.email}</TableCell>
-                    <TableCell>{item.password}</TableCell>
-                  </>
-                )}
-                <TableCell>
-                  <Button onClick={() => handleDeleteItem(item.id)}>Delete</Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    );
-  };
-
   const renderDialog = () => (
     <Dialog open={openDialog} onClose={handleCloseDialog}>
-      <DialogTitle>Add New {selectedTab.slice(0, -1)}</DialogTitle>
+      <DialogTitle>Add New {typeof selectedTab === 'string' ? selectedTab.slice(0, -1) : ''}</DialogTitle>
       <DialogContent>
-        {selectedTab !== 'Users' && selectedTab !== 'Admins' && (
+        {selectedTab !== 'Users' && selectedTab !== 'Admins' && selectedTab !== 'Actors' && (
           <>
-            <TextField label="ID" name="id" onChange={handleFormDataChange} fullWidth />
-            <TextField label="Name" name="name" onChange={handleFormDataChange} fullWidth />
-            <TextField label="Image" name="image" onChange={handleFormDataChange} fullWidth />
-            <TextField label="Description" name="description" onChange={handleFormDataChange} fullWidth />
-            <TextField label="Rating" name="rating" onChange={handleFormDataChange} fullWidth />
+            <TextField label="Name" name="name" onChange={handleInputChange} fullWidth />
+            <TextField label="Image" name="image" onChange={handleInputChange} fullWidth />
+            <TextField label="Description" name="description" onChange={handleInputChange} fullWidth />
+            <TextField label="genre" name="genre" onChange={handleInputChange} fullWidth />       
+            <TextField label="Rating" name="rating" onChange={handleInputChange} fullWidth />
+          </>
+        )}
+        {selectedTab === 'Actors' && (
+          <>
+            <TextField label="Name" name="name" onChange={handleInputChange} fullWidth />
+            <TextField label="Image" name="image" onChange={handleInputChange} fullWidth />
+            <TextField label="Description" name="description" onChange={handleInputChange} fullWidth />
           </>
         )}
         {(selectedTab === 'Users' || selectedTab === 'Admins') && (
           <>
-            <TextField label="ID" name="id" onChange={handleFormDataChange} fullWidth />
-            <TextField label="Username" name="username" onChange={handleFormDataChange} fullWidth />
-            <TextField label="Email" name="email" onChange={handleFormDataChange} fullWidth />
+            <TextField label="Username" name="username" onChange={handleInputChange} fullWidth />
+            <TextField label="Email" name="email" onChange={handleInputChange} fullWidth />
             {(selectedTab === 'Users' || (selectedTab === 'Admins' && !formData.password)) && (
-              <TextField label="Password" name="password" type="password" onChange={handleFormDataChange} fullWidth />
+              <TextField label="Password" name="password" type="password" onChange={handleInputChange} fullWidth />
             )}
           </>
         )}
       </DialogContent>
-      <Button onClick={handleAddItem}>Add</Button>
+      <Button onClick={handleFormSubmit}>Add</Button>
     </Dialog>
   );
 
   return (
     <div>
-      <Tabs value={selectedTab} onChange={handleTabChange}>
-        <Tab label="Movies" value="Movies" />
-        <Tab label="Series" value="Series" />
-        <Tab label="Actors" value="Actors" />
-        <Tab label="Users" value="Users" />
-        <Tab label="Admins" value="Admins" />
-      </Tabs>
       <div>
-        {renderListView()}
+        <Button onClick={() => handleTabChange('Movies')}>Movies</Button>
+        <Button onClick={() => handleTabChange('Series')}>Series</Button>
+        <Button onClick={() => handleTabChange('Actors')}>Actors</Button>
+        <Button onClick={() => handleTabChange('Users')}>Users</Button>
+        <Button onClick={() => handleTabChange('Admins')}>Admins</Button>
+      </div>
+      {renderDialog()}
+
+      {selectedTab === 'Movies' && (
+      <MovieProvider>
+        <UpdateMovieContextProvider>
+          <MoviesTable />
+        </UpdateMovieContextProvider>
+      </MovieProvider>
+      )}
+
+      {selectedTab === 'Series' && (
+        <SerieProvider>
+          <UpdateSerieContextProvider>
+            <SeriesTable />
+          </UpdateSerieContextProvider>
+        </SerieProvider>
+      )}
+
+      {selectedTab === 'Actors' && (
+        <ActorProvider>
+          <UpdateActorContextProvider>
+            <ActorsTable />
+          </UpdateActorContextProvider>
+        </ActorProvider>
+      )}
+
+      {selectedTab === 'Users' && (
+        <UserProvider>
+          <UpdateUserContextProvider>
+            <UsersTable />
+          </UpdateUserContextProvider>
+        </UserProvider>
+      )}
+
+      {selectedTab === 'Admins' && (
+        <AdminProvider>
+          <UpdateAdminContextProvider>
+            <AdminsTable />
+          </UpdateAdminContextProvider>
+        </AdminProvider>
+      )}
+
+      <div style={{ margin:'-32px 0 0 0'}}>
         <Button onClick={handleOpenDialog}>Add</Button>
         <Link to={"/"}>
             <Button>back</Button>
         </Link>
       </div>
-      {renderDialog()}
     </div>
   );
 };
 
 export default AdminPage;
-
-
