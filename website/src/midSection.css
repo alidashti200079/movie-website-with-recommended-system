@@ -33,6 +33,7 @@
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    margin-bottom: 20px;
   }
   
   .pagination button {
@@ -45,7 +46,7 @@
   }
   
   .pagination button.active {
-    background-color: #333;
+    background-color: #333333;
     color: #fff;
   }
   

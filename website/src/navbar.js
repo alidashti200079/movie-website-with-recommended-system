@@ -18,7 +18,10 @@ const Navbar = () => {
         </li>
         <li>
           <a href="/actors">Actors</a>
-        </li>              
+        </li>  
+        <li>
+          <a href="/recommendation">Recommendation</a>
+        </li>            
         <li>
           <a href="/Help">Help</a>
         </li>

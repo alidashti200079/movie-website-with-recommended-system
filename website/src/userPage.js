@@ -271,7 +271,7 @@ const UserPage = () => {
               <VotedTable />
             </UpdateVotedContextProvider>
           </VoteProvider>
-          <div style={{ margin:'-28px 0 0 5px'}}>
+          <div style={{ margin:'-28px 0 10px 5px'}}>
             <Button variant="contained" onClick={handleOpenDialog}>Add</Button>
           </div>
         </>
